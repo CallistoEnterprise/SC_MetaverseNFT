@@ -204,15 +204,14 @@ contract NFTMultiCurrencySaleSystem is ActivatedByOwner {
         emit TokenSold(_mintedId, _classID, msg.sender);
     }
 
-    function buyNFTwithCoin(uint256 _classID, string memory _token_symbol,uint256 _currency_amount) public payable onlyActive
+    function buyNFTwithCoin(uint256 _classID) public payable onlyActive
     {
         // WARNING!
         // This function does not refund overpaid amount at the moment.
         // TODO
 
-        require(_currency_amount*10e18 == msg.value, "_currency_amount and msg.value do not match");
 
-        uint256 toUSD = _currency_amount * PriceFeed(price_feed_contract).getPrice(tokensList[_token_symbol]);
+        uint256 toUSD = msg.value/10e18 * PriceFeed(price_feed_contract).getPrice(0x0000000000000000000000000000000000000001);
 
         require(toUSD >= auctions[_classID].priceInWei, "Insufficient funds");
         require(auctions[_classID].amount_sold < auctions[_classID].max_supply, "This sale has already sold all allocated NFTs");
