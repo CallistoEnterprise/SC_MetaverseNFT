@@ -210,6 +210,7 @@ contract NFTMultiCurrencySaleSystem is ActivatedByOwner {
         // This function does not refund overpaid amount at the moment.
         // TODO
 
+        require(msg.value >= 1*10e18, "min value: 1 CLO");
 
         uint256 toUSD = msg.value/10e18 * PriceFeed(price_feed_contract).getPrice(0x0000000000000000000000000000000000000001);
 
