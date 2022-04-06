@@ -194,7 +194,8 @@ contract NFTMultiCurrencySaleSystem is ActivatedByOwner {
         require(block.timestamp > auctions[_classID].start_timestamp, "This sale is not yet started");
         require(auctions[_classID].priceInWei != 0, "Min price is not configured by the owner");
 
-        TokenInterface(tokensList[_token_symbol]).transferFrom(msg.sender, revenue, _currency_amount);
+        //_currency_amount must be converted to WEI for the transfer.
+        TokenInterface(tokensList[_token_symbol]).transferFrom(msg.sender, revenue, _currency_amount*10e18); 
 
         uint256 _mintedId = NFTInterface(nft_contract).mintWithClass(_classID);
         auctions[_classID].amount_sold++;
