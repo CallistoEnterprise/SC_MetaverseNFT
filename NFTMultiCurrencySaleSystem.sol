@@ -186,7 +186,7 @@ contract NFTMultiCurrencySaleSystem is ActivatedByOwner {
         // This function does not refund overpaid amount at the moment.
         // TODO
 
-        uint256 toUSD = _currency_amount * PriceFeed(price_feed_contract).getPrice(tokensList[_token_symbol]);
+        uint256 toUSD = _currency_amount * PriceFeed(price_feed_contract).getPrice(tokensList[_token_symbol]) / 1e18;
 
         require(toUSD >= auctions[_classID].priceInWei, "Insufficient funds");
         require(auctions[_classID].amount_sold < auctions[_classID].max_supply, "This sale has already sold all allocated NFTs");
@@ -194,8 +194,7 @@ contract NFTMultiCurrencySaleSystem is ActivatedByOwner {
         require(block.timestamp > auctions[_classID].start_timestamp, "This sale is not yet started");
         require(auctions[_classID].priceInWei != 0, "Min price is not configured by the owner");
 
-        //_currency_amount must be converted to WEI for the transfer.
-        TokenInterface(tokensList[_token_symbol]).transferFrom(msg.sender, revenue, _currency_amount*10e18); 
+        TokenInterface(tokensList[_token_symbol]).transferFrom(msg.sender, revenue, _currency_amount); 
 
         uint256 _mintedId = NFTInterface(nft_contract).mintWithClass(_classID);
         auctions[_classID].amount_sold++;
@@ -211,9 +210,7 @@ contract NFTMultiCurrencySaleSystem is ActivatedByOwner {
         // This function does not refund overpaid amount at the moment.
         // TODO
 
-        require(msg.value >= 1*10e18, "min value: 1 CLO");
-
-        uint256 toUSD = msg.value/10e18 * PriceFeed(price_feed_contract).getPrice(0x0000000000000000000000000000000000000001);
+        uint256 toUSD = msg.value * PriceFeed(price_feed_contract).getPrice(address(1)) / 1e18;
 
         require(toUSD >= auctions[_classID].priceInWei, "Insufficient funds");
         require(auctions[_classID].amount_sold < auctions[_classID].max_supply, "This sale has already sold all allocated NFTs");
