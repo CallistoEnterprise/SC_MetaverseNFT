@@ -194,10 +194,10 @@ contract NFTMultiCurrencySaleSystem is ActivatedByOwner {
         require(block.timestamp > auctions[_classID].start_timestamp, "This sale is not yet started");
         require(auctions[_classID].priceInWei != 0, "Min price is not configured by the owner");
 
-        TokenInterface(tokensList[_token_symbol]).transferFrom(msg.sender, revenue, _currency_amount); 
-
         uint256 _mintedId = NFTInterface(nft_contract).mintWithClass(_classID);
         auctions[_classID].amount_sold++;
+
+        TokenInterface(tokensList[_token_symbol]).transferFrom(msg.sender, revenue, _currency_amount);
 
         NFTInterface(nft_contract).transfer(msg.sender, _mintedId, "");
 
@@ -218,10 +218,10 @@ contract NFTMultiCurrencySaleSystem is ActivatedByOwner {
         require(block.timestamp > auctions[_classID].start_timestamp, "This sale is not yet started");
         require(auctions[_classID].priceInWei != 0, "Min price is not configured by the owner");
 
-        payable(revenue).transfer(msg.value);
-
         uint256 _mintedId = NFTInterface(nft_contract).mintWithClass(_classID);
         auctions[_classID].amount_sold++;
+
+        payable(revenue).transfer(msg.value);
 
         NFTInterface(nft_contract).transfer(msg.sender, _mintedId, "");
 

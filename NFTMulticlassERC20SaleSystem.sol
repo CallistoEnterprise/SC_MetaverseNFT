@@ -183,10 +183,10 @@ contract NFTMulticlassLinearAuction is ActivatedByOwner {
         require(block.timestamp > auctions[_classID].start_timestamp, "This auction is not yet started");
         require(auctions[_classID].priceInWei != 0, "Min price is not configured by the owner");
 
-        ERC20Interface(erc20_contract).transferFrom(msg.sender, revenue, _erc20_amount);
-
         uint256 _mintedId = NFTInterface(nft_contract).mintWithClass(_classID);
         auctions[_classID].amount_sold++;
+
+        ERC20Interface(erc20_contract).transferFrom(msg.sender, revenue, _erc20_amount);
 
         NFTInterface(nft_contract).transfer(msg.sender, _mintedId, "");
 
