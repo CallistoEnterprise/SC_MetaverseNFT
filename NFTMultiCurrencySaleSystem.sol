@@ -218,18 +218,13 @@ contract NFTMultiCurrencySaleSystem is ActivatedByOwner {
         require(block.timestamp > auctions[_classID].start_timestamp, "This sale is not yet started");
         require(auctions[_classID].priceInWei != 0, "Min price is not configured by the owner");
 
+        payable(revenue).transfer(msg.value);
+
         uint256 _mintedId = NFTInterface(nft_contract).mintWithClass(_classID);
         auctions[_classID].amount_sold++;
 
         NFTInterface(nft_contract).transfer(msg.sender, _mintedId, "");
 
         emit TokenSold(_mintedId, _classID, msg.sender);
-    }
-
-    function withdrawRevenue() public onlyOwner
-    {
-        emit RevenueWithdrawal(address(this).balance);
-
-        payable(revenue).transfer(address(this).balance);
     }
 }
