@@ -90,19 +90,6 @@ interface NFTInterface {
 
 interface ERC20Interface {
     /**
-     * @dev Emitted when `value` tokens are moved from one account (`from`) to
-     * another (`to`).
-     *
-     * Note that `value` may be zero.
-     */
-    event Transfer(address indexed from, address indexed to, uint256 value);
-
-    /**
-     * @dev Returns the amount of tokens owned by `account`.
-     */
-    function balanceOf(address account) external view returns (uint256);
-
-    /**
      * @dev Moves `amount` tokens from `from` to `to` using the
      * allowance mechanism. `amount` is then deducted from the caller's
      * allowance.
@@ -184,7 +171,7 @@ contract NFTMulticlassLinearAuction is ActivatedByOwner {
         erc20_contract = _erc20_contract;
     }
 
-    function buyNFT(uint256 _classID, uint256 _erc20_amount) public payable onlyActive
+    function buyNFT(uint256 _classID, uint256 _erc20_amount) public onlyActive
     {
         // WARNING!
         // This function does not refund overpaid amount at the moment.
