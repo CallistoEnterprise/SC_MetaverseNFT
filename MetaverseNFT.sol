@@ -126,11 +126,16 @@ abstract contract Ownable is Context {
 }
 
 abstract contract MinterRole is Ownable {
+
+    event SetMinterRole(address minter, bool status);
+    
     mapping (address => bool) public minter_role;
 
     function setMinterRole(address _who, bool _status) public onlyOwner
     {
         minter_role[_who] = _status;
+
+        emit SetMinterRole(_who, _status);
     }
 
     modifier onlyMinter
