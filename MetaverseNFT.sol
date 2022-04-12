@@ -1060,25 +1060,4 @@ contract TestNFT is ExtendedNFT, ClassifiedNFT {
     {
         _appendProperty(_tokenId, _propertyId, _content);
     }
-
-    function migrationMint (address to, uint256 _tokenId, uint256 _classID, string calldata _serialNumber) public onlyMinter {
-        require(to != address(0), "NFT: mint to the zero address");
-        require(!_exists(_tokenId), "NFT: token already minted");
-
-        _beforeTokenTransfer(address(0), to, _tokenId);
-        _configureNFT(_tokenId);
-
-        token_classes[_tokenId] = _classID;
-        _tokenFeeLevels[_tokenId] = class_feeLevel[_classID];
-        _addPropertyWithContent(_tokenId, _serialNumber);
-        _balances[to] += 1;
-        _owners[_tokenId] = to;
-
-        emit Transfer(address(0), to, _tokenId);
-    }
-
-    function setNextMintID (uint256 _next_mint_id) public onlyOwner {
-        require(_next_mint_id > next_mint_id, "next_mint_id must be higher than last token ID");
-        next_mint_id = _next_mint_id;
-    }
 }
