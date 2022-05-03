@@ -1015,7 +1015,7 @@ abstract contract ClassifiedNFT is MinterRole, ExtendedNFT, IClassifiedNFT {
     }
 }
 
-contract TestNFT is ExtendedNFT, ClassifiedNFT {
+contract MetaverseNFT is ExtendedNFT, ClassifiedNFT {
 
     function initialize(string memory name_, string memory symbol_, uint256 _defaultFee) external {
         require(_owner == address(0), "Already initialized");
